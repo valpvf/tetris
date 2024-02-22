@@ -30,7 +30,8 @@ h1 {
   height: min(4vh, 7vw);
   width: min(4vh, 7vw);
   background-color: rgba(182, 166, 166, 0.2);
-  border-radius: 0.3vh;
+  border-radius: 0.5vh;
+  outline: 0.1px solid rgba(170, 187, 204, 0.35);
 }
 
 .grid .I {
@@ -55,6 +56,10 @@ h1 {
 
 .grid .T {
   background-color: rgb(143, 32, 247);
+}
+
+.grid .X {
+  background-color: rgb(164, 219, 178);
 }
 
 .grid .Z {
