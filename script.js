@@ -1,3 +1,10 @@
+import {
+  PLAYFIELDS_COLUMNS,
+  PLAYFIELDS_ROWS,
+  TETROMINOES,
+  TETROMINO_NAMES,
+} from "./constant.js";
+
 const scoreElement = document.querySelector(".score");
 
 function convertPositionToIndex(row, column) {
@@ -64,6 +71,10 @@ function placeTetromino() {
   const matrixSize = tetromino.matrix.length;
   for (let row = 0; row < matrixSize; row++) {
     for (let column = 0; column < matrixSize; column++) {
+      if (isOutsideOfTopboard(row)) {
+        isGameOver = true;
+        return;
+      }
       if (tetromino.matrix[row][column]) {
         playfield[tetromino.row + row][tetromino.column + column] =
           tetromino.name;
@@ -181,22 +192,34 @@ function rotate() {
 
 document.addEventListener("keydown", onKeyDown);
 function onKeyDown(e) {
-  switch (e.key) {
-    case "ArrowUp":
-      rotate();
-      break;
-    case "ArrowDown":
-      moveTetrominoDown();
-      break;
-    case "ArrowLeft":
-      moveTetrominoLeft();
-      break;
-    case "ArrowRight":
-      moveTetrominoRight();
-      break;
+  if (e.key === "Escape") {
+    togglePauseGame();
+  }
+  if (!isPaused) {
+    switch (e.key) {
+      case "ArrowUp":
+        rotate();
+        break;
+      case "ArrowDown":
+        moveTetrominoDown();
+        break;
+      case "ArrowLeft":
+        moveTetrominoLeft();
+        break;
+      case "ArrowRight":
+        moveTetrominoRight();
+        break;
+    }
   }
   draw();
 }
+
+// function dropTetrominoDown() {
+//   while (isValid()) {
+//     tetromino.row++;
+//   }
+//   tetromino.row--;
+// }
 
 function rotateMatrix(matrixTetromino) {
   const N = matrixTetromino.length;
@@ -216,6 +239,7 @@ function moveTetrominoDown() {
     tetromino.row -= 1;
     placeTetromino();
   }
+  startLoop();
 }
 function moveTetrominoLeft() {
   tetromino.column -= 1;
@@ -235,18 +259,46 @@ function moveDown() {
   draw();
   stopLoop();
   startLoop();
+  if (isGameOver) {
+    gameOver();
+  }
 }
+
+let isGameOver = false;
 let timedId = null;
+const overlay = document.querySelector(".overlay");
+
+function gameOver() {
+  stopLoop();
+  overlay.style.display = "flex";
+}
+
 moveDown();
+
 function startLoop() {
-  setTimeout(() => {
-    timedId = requestAnimationFrame(moveDown);
-  }, 700);
+  if (!timedId) {
+    timedId = setTimeout(() => {
+      requestAnimationFrame(moveDown);
+    }, 700);
+  }
 }
 
 function stopLoop() {
   cancelAnimationFrame(timedId);
-  timedId = clearTimeout(timedId);
+  clearTimeout(timedId);
+
+  timedId = null;
+}
+
+let isPaused = false;
+
+function togglePauseGame() {
+  if (!isPaused) {
+    stopLoop();
+  } else {
+    startLoop();
+  }
+  isPaused = !isPaused;
 }
 
 function isValid() {

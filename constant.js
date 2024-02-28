@@ -1,8 +1,8 @@
-const PLAYFIELDS_COLUMNS = 10;
-const PLAYFIELDS_ROWS = 20;
+export const PLAYFIELDS_COLUMNS = 10;
+export const PLAYFIELDS_ROWS = 20;
 // const TETROMINO_NAMES = ["I", "J", "L", "O", "S", "T", "Z"];
 
-const TETROMINOES = {
+export const TETROMINOES = {
   I: [
     [0, 0, 0, 0],
     [1, 1, 1, 1],
@@ -45,4 +45,4 @@ const TETROMINOES = {
   ],
 };
 
-const TETROMINO_NAMES = Object.keys(TETROMINOES);
+export const TETROMINO_NAMES = Object.keys(TETROMINOES);
