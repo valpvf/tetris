@@ -12,7 +12,7 @@ body {
   padding: 3% 0 1%;
   display: flex;
   justify-content: center;
-  gap: 5vw;
+  gap: 2vw;
 }
 
 .section {
@@ -85,36 +85,61 @@ h3 {
   /* outline: 0.1px solid rgb(225, 234, 97, 0.622); */
 }
 
+.next {
+  /* background: rgb(217, 219, 223); */
+  padding: 0.5vh;
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 0.5vh;
+  /* box-shadow: inset 2px 2px 2px rgba(199, 10, 10, 0.8) */
+}
 
-.grid .I {
+.next>div {
+  height: min(3vh, 5vw);
+  width: min(3vh, 5vw);
+  /* border-color: rgba(173, 198, 246, 0.4);
+  border-radius: 0.5vh; */
+  /* outline: 0.1px solid rgb(225, 234, 97, 0.622); */
+}
+
+
+.grid .I,
+.next .I {
   background-color: rgb(146, 190, 228);
 }
 
-.grid .J {
+.grid .J,
+.next .J {
   background-color: rgb(10, 13, 225);
 }
 
-.grid .L {
+.grid .L,
+.next .L {
   background-color: rgb(243, 131, 51);
 }
 
-.grid .O {
+.grid .O,
+.next .O {
   background-color: rgb(211, 202, 17);
 }
 
-.grid .S {
+.grid .S,
+.next .S {
   background-color: rgb(32, 247, 61);
 }
 
-.grid .T {
+.grid .T,
+.next .T {
   background-color: rgb(143, 32, 247);
 }
 
-.grid .X {
+.grid .X,
+.next .X {
   background-color: rgb(164, 219, 178);
 }
 
-.grid .Z {
+.grid .Z,
+.next .Z {
   background-color: rgb(241, 67, 55);
 }
 
@@ -172,7 +197,7 @@ h3 {
 .inner {
   display: flex;
   gap: 3vw;
-  margin-top: 5vh;
+  margin-top: 3vh;
 }
 
 .wrap-btn {
