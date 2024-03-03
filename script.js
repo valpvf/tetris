@@ -6,28 +6,82 @@ import {
 } from "./constant.js";
 
 const btnRestart = document.querySelector(".btn-restart");
-const scoreElement = document.querySelector(".score");
+const downBtn = document.querySelector(".down");
+const lineElement = document.querySelector(".line");
+const leftBtn = document.querySelector(".left");
+const overElement = document.querySelector(".over");
 const overlay = document.querySelector(".overlay");
+const pauseElement = document.querySelector(".paused");
+const putBtn = document.querySelector(".put");
+const restartElement = document.querySelector(".restart");
+const rightBtn = document.querySelector(".right");
+const scoreBtn = document.querySelector(".score-btn");
+const scoreElement = document.querySelector(".score");
+const timer = document.querySelector(".timer");
+const totalElement = document.querySelector(".total");
+const upBtn = document.querySelector(".up");
+const winElement = document.querySelector(".win");
+let cells;
+let line;
 let playfield;
-let score = 0;
+let score;
 let tetromino;
+let time;
 let timedId = null;
+let timerID = null;
+let total = 0;
 let isGameOver = false;
 let isPaused = false;
 
-init();
-const cells = document.querySelectorAll(".grid div");
+document.addEventListener("keydown", onKeyDown);
+btnRestart.addEventListener("click", restart);
+downBtn.addEventListener("click", moveTetrominoDown);
+leftBtn.addEventListener("click", moveTetrominoLeft);
+pauseElement.addEventListener("click", togglePauseGame);
+putBtn.addEventListener("click", dropTetrominoDown);
+restartElement.addEventListener("click", restart);
+rightBtn.addEventListener("click", moveTetrominoRight);
+upBtn.addEventListener("click", rotate);
 
-function init() {
-  generatePlayField();
-  generateTetromino();
+init();
+
+function timerGame() {
+  timerID = setInterval(function () {
+    if (!isPaused) time += 1;
+    let minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+    timer.innerHTML =
+      minutes.toString().padStart(2, 0) +
+      ":" +
+      seconds.toString().padStart(2, 0);
+  }, 1000);
 }
 
-btnRestart.addEventListener("click", function () {
+function init() {
+  if (timerID) clearInterval(timerID);
+  timerGame();
+  time = 0;
+  score = 0;
+  line = 0;
+  isGameOver = false;
+  generatePlayField();
+  generateTetromino();
+  cells = document.querySelectorAll(".grid div");
+  moveDown();
+  localStorage.getItem("total")
+    ? (total = +localStorage.getItem("total"))
+    : 0;
+  scoreElement.innerHTML = 0;
+  totalElement.innerHTML = total;
+  overElement.style.display = "none";
+  winElement.style.display = "none";
+}
+
+function restart() {
   document.querySelector(".grid").innerHTML = "";
-  init();
   overlay.style.display = "none";
-});
+  init();
+}
 
 function convertPositionToIndex(row, column) {
   return row * PLAYFIELDS_COLUMNS + column;
@@ -52,9 +106,10 @@ function countScore(destroyRows) {
     case 4:
       score += 100;
       break;
-    // default:
-    //   score += 200;
+    case 5:
+      score += 200;
   }
+  line += destroyRows;
   scoreElement.innerHTML = score;
 }
 
@@ -165,9 +220,7 @@ function drawTetromino() {
       // console.log(cellIndex);
       cells[cellIndex].classList.add(name);
     }
-    //column
   }
-  //row
 }
 
 // drawTetromino();
@@ -203,7 +256,6 @@ function rotate() {
   draw();
 }
 
-document.addEventListener("keydown", onKeyDown);
 function onKeyDown(e) {
   if (e.key === "Escape") {
     togglePauseGame();
@@ -257,12 +309,14 @@ function moveTetrominoDown() {
   }
   startLoop();
 }
+
 function moveTetrominoLeft() {
   tetromino.column -= 1;
   if (!isValid()) {
     tetromino.column += 1;
   }
 }
+
 function moveTetrominoRight() {
   tetromino.column += 1;
   if (!isValid()) {
@@ -282,10 +336,19 @@ function moveDown() {
 
 function gameOver() {
   stopLoop();
+  console.log("timerId 1", timerID);
+  clearInterval(timerID);
+  console.log("timerId 2", timerID);
   overlay.style.display = "flex";
+  if (+localStorage.getItem("total") < score) {
+    localStorage.setItem("total", score);
+    winElement.style.display = "block";
+  } else {
+    overElement.style.display = "block";
+  }
+  scoreBtn.innerHTML = score;
+  lineElement.innerHTML = line;
 }
-
-moveDown();
 
 function startLoop() {
   if (!timedId) {
@@ -324,7 +387,6 @@ function isValid() {
       }
     }
   }
-
   return true;
 }
 

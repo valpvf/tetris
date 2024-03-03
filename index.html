@@ -21,15 +21,70 @@
   </head>
   <body>
     <div class="grid"></div>
-    <section>
+    <section class="section">
+      <h3 style="color: white; text-align: center">
+        Time: <span class="timer">00:00</span>
+      </h3>
       <h1>TETRIS</h1>
+      <h2 style="color: white">Total: <span class="total"></span></h2>
       <h2 style="color: white">
         Score:
         <span class="score">0</span>
       </h2>
+      <div class="wrap">
+        <svg class="arrow up">
+          <use class="arrow-size" href="./sprite.svg#icon-up"></use>
+        </svg>
+        <div style="display: flex; justify-content: center; gap: 3vw">
+          <svg class="arrow left">
+            <use
+              class="arrow-size"
+              href="./sprite.svg#icon-left"
+            ></use>
+          </svg>
+          <svg class="arrow put">
+            <use
+              class="arrow-size"
+              href="./sprite.svg#icon-checked"
+            ></use>
+          </svg>
+          <svg class="arrow right">
+            <use
+              class="arrow-size"
+              href="./sprite.svg#icon-right"
+            ></use>
+          </svg>
+        </div>
+        <svg class="arrow down">
+          <use class="arrow-size" href="./sprite.svg#icon-down"></use>
+        </svg>
+        <div>
+          <button class="paused btn">
+            <svg class="arrow">
+              <use
+                class="arrow-size"
+                href="./sprite.svg#icon-hour"
+              ></use>
+            </svg></button
+          ><button class="restart btn">
+            <svg class="arrow">
+              <use
+                class="arrow-size"
+                href="./sprite.svg#icon-spinner"
+              ></use>
+            </svg>
+          </button>
+        </div>
+      </div>
     </section>
     <div class="overlay">
-      <button class="btn-restart">Restart</button>
+      <button class="btn-restart">
+        <div class="win">YOU WIN!</div>
+        <div class="over">Game over!</div>
+        <div>Score: <span class="score-btn"></span></div>
+        <div>Line: <span class="line"></span></div>
+        Restart?
+      </button>
     </div>
 
     <!-- <script src="./constant.js"></script> -->
