@@ -39,7 +39,7 @@ downBtn.addEventListener("click", moveTetrominoDown);
 leftBtn.addEventListener("click", moveTetrominoLeft);
 pauseElement.addEventListener("click", togglePauseGame);
 putBtn.addEventListener("click", dropTetrominoDown);
-restartElement.addEventListener("click", restart);
+restartElement.addEventListener("click", restartBTN);
 rightBtn.addEventListener("click", moveTetrominoRight);
 upBtn.addEventListener("click", rotate);
 
@@ -59,8 +59,8 @@ function timerGame() {
 
 function init() {
   if (timerID) clearInterval(timerID);
-  timerGame();
   time = 0;
+  timerGame();
   score = 0;
   line = 0;
   isGameOver = false;
@@ -110,7 +110,7 @@ function countScore(destroyRows) {
       score += 200;
   }
   line += destroyRows;
-  scoreElement.innerHTML = score;
+  scoreElement.innerHTML = score.toString().padStart(2, 0);
 }
 
 function generatePlayField() {
@@ -336,9 +336,7 @@ function moveDown() {
 
 function gameOver() {
   stopLoop();
-  console.log("timerId 1", timerID);
   clearInterval(timerID);
-  console.log("timerId 2", timerID);
   overlay.style.display = "flex";
   if (+localStorage.getItem("total") < score) {
     localStorage.setItem("total", score);
@@ -408,4 +406,9 @@ function hasCollisions(row, column) {
     tetromino.matrix[row][column] &&
     playfield[tetromino.row + row]?.[tetromino.column + column]
   );
+}
+
+function restartBTN() {
+  restart();
+  this.blur();
 }

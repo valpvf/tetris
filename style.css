@@ -18,14 +18,29 @@ body {
 .section {
   display: flex;
   flex-direction: column;
-  gap: 2vh;
+  align-items: center;
+  width: 20vw;
+  gap: 3vh;
 }
 
 h1 {
   text-align: center;
   font-size: 4rem;
   color: yellow;
-  text-shadow: 3px 3px 2px rgb(227, 21, 175);
+  text-shadow: 3px 3px 2px rgb(227, 21, 175), 4px 4px 3px skyblue;
+}
+
+h2:first-of-type {
+  color: rgb(255, 97, 97)
+}
+
+h2:last-of-type {
+  color: lightseagreen
+}
+
+h3 {
+  color: rgb(210, 247, 255);
+  text-align: center
 }
 
 .overlay {
@@ -152,4 +167,17 @@ h1 {
   outline: none;
   border: none;
   cursor: pointer;
+}
+
+.inner {
+  display: flex;
+  gap: 3vw;
+  margin-top: 5vh;
+}
+
+.wrap-btn {
+  display: flex;
+  justify-content: center;
+  /* gap: 0.5vw */
+  width: 16vw;
 }
