@@ -25,6 +25,8 @@ let cells;
 let cellsNext;
 let line;
 let playfield;
+let nameElement;
+let nameNext;
 let nextPlayfield;
 let score;
 let tetromino;
@@ -68,9 +70,12 @@ function init() {
   line = 0;
   isGameOver = false;
   generatePlayField();
-  generateTetromino();
+  nameElement = getRandomElement(TETROMINO_NAMES);
+  generateTetromino(nameElement);
   cells = document.querySelectorAll(".grid div");
   cellsNext = document.querySelectorAll(".next div");
+  generateNext();
+  nextFigure();
   moveDown();
   localStorage.getItem("total")
     ? (total = +localStorage.getItem("total"))
@@ -79,6 +84,40 @@ function init() {
   totalElement.innerHTML = total;
   overElement.style.display = "none";
   winElement.style.display = "none";
+}
+
+function generateNext() {
+  for (let i = 0; i < 12; i++) {
+    const div = document.createElement("div");
+    document.querySelector(".next").append(div);
+  }
+  nextPlayfield = new Array(3).fill().map(() => new Array(4).fill(0));
+}
+
+function nextFigure() {
+  const matrixSizeNext = tetrominoNext.matrixNext.length;
+  for (let row = 0; row < matrixSizeNext; row++) {
+    for (let column = 0; column < matrixSizeNext; column++) {
+      if (tetrominoNext.matrixNext[row][column]) {
+        nextPlayfield[tetrominoNext.row][
+          tetrominoNext.column + column
+        ] = tetrominoNext.nameNext;
+      }
+    }
+  }
+
+  cellsNext = document.querySelectorAll(".next div");
+
+  const nameNext = tetrominoNext.nameNext;
+  const sizeNext = tetrominoNext.matrixNext.length;
+  for (let row = 0; row < sizeNext; row++) {
+    for (let column = 0; column < sizeNext; column++) {
+      if (TETROMINOES[nameNext][row][column] === 0) continue;
+      const cellIndexNext = row * 4 + column;
+
+      cellsNext[cellIndexNext].classList.add(nameNext);
+    }
+  }
 }
 
 function restart() {
@@ -123,28 +162,20 @@ function generatePlayField() {
     const div = document.createElement("div");
     document.querySelector(".grid").append(div);
   }
-  for (let i = 0; i < 12; i++) {
-    const div = document.createElement("div");
-    document.querySelector(".next").append(div);
-  }
   playfield = new Array(PLAYFIELDS_ROWS)
     .fill()
     .map(() => new Array(PLAYFIELDS_COLUMNS).fill(0));
-  nextPlayfield = new Array(3).fill().map(() => new Array(4).fill(0));
-  console.log(nextPlayfield);
 }
 
-function generateTetromino() {
-  const name = getRandomElement(TETROMINO_NAMES);
-  const nameNext = getRandomElement(TETROMINO_NAMES);
-  const matrix = TETROMINOES[name];
+function generateTetromino(nameElement) {
+  nameNext = getRandomElement(TETROMINO_NAMES);
+  const matrix = TETROMINOES[nameElement];
   const matrixNext = TETROMINOES[nameNext];
-  // console.log(matrix.length);
   const column = Math.floor((PLAYFIELDS_COLUMNS - matrix.length) / 2);
   const rowTetro = -2;
 
   tetromino = {
-    name,
+    name: nameElement,
     matrix,
     row: rowTetro,
     column,
@@ -172,23 +203,13 @@ function placeTetromino() {
       }
     }
   }
-  console.log(tetrominoNext);
-  const matrixSizeNext = tetrominoNext.matrixNext.length;
-
-  for (let row = 0; row < matrixSizeNext; row++) {
-    for (let column = 0; column < matrixSizeNext; column++) {
-      if (tetrominoNext.matrixNext[row][column]) {
-        nextPlayfield[tetrominoNext.row][
-          tetrominoNext.column + column
-        ] = tetrominoNext.nameNext;
-      }
-    }
-  }
 
   const filledRows = findFilledRows();
   removeFillRows(filledRows);
-  generateTetromino();
+  generateTetromino(nameNext);
   countScore(filledRows.length);
+  cellsNext.forEach((cell) => cell.removeAttribute("class"));
+  nextFigure();
 }
 
 function removeFillRows(filledRows) {
@@ -252,19 +273,6 @@ function drawTetromino() {
       cells[cellIndex].classList.add(name);
     }
   }
-
-  const nameNext = tetrominoNext.nameNext;
-  const sizeNext = tetrominoNext.matrixNext.length;
-  for (let row = 0; row < sizeNext; row++) {
-    for (let column = 0; column < sizeNext; column++) {
-      console.log("nextPlayfield", nextPlayfield);
-      if (TETROMINOES[nameNext][row][column] === 0) continue;
-      const cellIndexNext = row * 4 + column;
-
-      cellsNext[cellIndexNext].classList.add(nameNext);
-      // console.log(cellIndexNext, cellsNext[cellIndexNext]);
-    }
-  }
 }
 
 // drawTetromino();
@@ -272,7 +280,6 @@ function drawTetromino() {
 
 function draw() {
   cells.forEach((cell) => cell.removeAttribute("class"));
-  cellsNext.forEach((cell) => cell.removeAttribute("class"));
   drawTetromino();
   drawPlayField();
 }
