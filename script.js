@@ -1,9 +1,51 @@
-import {
-  PLAYFIELDS_COLUMNS,
-  PLAYFIELDS_ROWS,
-  TETROMINOES,
-  TETROMINO_NAMES,
-} from "./constant.js";
+const PLAYFIELDS_COLUMNS = 10;
+const PLAYFIELDS_ROWS = 20;
+// const TETROMINO_NAMES = ["I", "J", "L", "O", "S", "T", "Z"];
+
+const TETROMINOES = {
+  I: [
+    [0, 0, 0, 0],
+    [1, 1, 1, 1],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ],
+  J: [
+    [1, 0, 0],
+    [1, 1, 1],
+    [0, 0, 0],
+  ],
+  L: [
+    [0, 0, 1],
+    [1, 1, 1],
+    [0, 0, 0],
+  ],
+  O: [
+    [1, 1],
+    [1, 1],
+  ],
+  S: [
+    [0, 1, 1],
+    [1, 1, 0],
+    [0, 0, 0],
+  ],
+  T: [
+    [0, 1, 0],
+    [1, 1, 1],
+    [0, 0, 0],
+  ],
+  X: [
+    [0, 1, 0],
+    [1, 1, 1],
+    [0, 1, 0],
+  ],
+  Z: [
+    [1, 1, 0],
+    [0, 1, 1],
+    [0, 0, 0],
+  ],
+};
+
+const TETROMINO_NAMES = Object.keys(TETROMINOES);
 
 const btnRestart = document.querySelector(".btn-restart");
 const downBtn = document.querySelector(".down");
